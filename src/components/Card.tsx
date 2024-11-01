@@ -1,9 +1,9 @@
 import React from 'react';
 
 interface CardProps {
-  number: number; // The number on the card
-  isFlipped: boolean; // Whether the card is face-up or face-down
-  onClick: () => void; // Function to handle card clicks
+  number: number; 
+  isFlipped: boolean; 
+  onClick: () => void; 
 }
 
 const Card: React.FC<CardProps> = ({ number, isFlipped, onClick }) => {
