@@ -6,40 +6,40 @@ import CardExplanationModal from '../components/CardExplanationModal';
 import { shuffleArray } from '../utils/shuffle';
 
 export default function Home() {
-  const [deck, setDeck] = useState<number[]>([]); // Full deck of 72 cards
-  const [drawnCards, setDrawnCards] = useState<number[]>([]); // 10 cards drawn from the deck
-  const [isDrawn, setIsDrawn] = useState(false); // Tracks if cards have been drawn
-  const [currentCardIndex, setCurrentCardIndex] = useState(0); // Tracks the current card being explained
-  const [isReading, setIsReading] = useState(false); // Tracks if we're in the "reading" phase
+  const [deck, setDeck] = useState<number[]>([]); 
+  const [drawnCards, setDrawnCards] = useState<number[]>([]); 
+  const [isDrawn, setIsDrawn] = useState(false); 
+  const [currentCardIndex, setCurrentCardIndex] = useState(0); 
+  const [isReading, setIsReading] = useState(false); 
 
   // Initialize deck on load
   useEffect(() => {
-    const cardNumbers = Array.from({ length: 72 }, (_, i) => i + 1); // Create a deck of 72 cards
-    setDeck(shuffleArray(cardNumbers)); // Shuffle the deck
+    const cardNumbers = Array.from({ length: 72 }, (_, i) => i + 1); 
+    setDeck(shuffleArray(cardNumbers)); 
   }, []);
 
   // Draw 10 random cards from the shuffled deck
   const handleDrawCards = () => {
-    const drawn = deck.slice(0, 10); // Take the first 10 cards from the shuffled deck
-    setDrawnCards(drawn); // Set the drawn cards
-    setIsDrawn(true); // Mark cards as drawn
-    setIsReading(false); // Ensure reading phase resets
+    const drawn = deck.slice(0, 10); 
+    setDrawnCards(drawn);
+    setIsDrawn(true); 
+    setIsReading(false); 
   };
 
   // Start reading cards in order
   const handleReadCards = () => {
     if (isDrawn) {
-      setCurrentCardIndex(0); // Start with the first card
-      setIsReading(true); // Begin the reading phase
+      setCurrentCardIndex(0); 
+      setIsReading(true); 
     }
   };
 
   // Move to the next card during the reading phase
   const handleNextCard = () => {
     if (currentCardIndex < drawnCards.length - 1) {
-      setCurrentCardIndex((prevIndex) => prevIndex + 1); // Move to the next card
+      setCurrentCardIndex((prevIndex) => prevIndex + 1); 
     } else {
-      setIsReading(false); // End the reading phase
+      setIsReading(false); 
     }
   };
 
@@ -97,14 +97,14 @@ export default function Home() {
         <button 
           onClick={handleDrawCards} 
           className="bg-green-500 text-white py-2 px-4 rounded"
-          disabled={isDrawn} // Disable button after cards are drawn
+          disabled={isDrawn} 
         >
           Draw Cards
         </button>
         <button 
           onClick={handleReadCards} 
           className="bg-blue-500 text-white py-2 px-4 rounded"
-          disabled={!isDrawn || isReading} // Disable if cards not drawn or reading is in progress
+          disabled={!isDrawn || isReading} 
         >
           Read Cards
         </button>
@@ -114,8 +114,8 @@ export default function Home() {
       {isReading && currentCardIndex < drawnCards.length && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
           <CardExplanationModal 
-            number={drawnCards[currentCardIndex]} // Pass the current card number
-            onClose={handleNextCard} // Close moves to the next card
+            number={drawnCards[currentCardIndex]} 
+            onClose={handleNextCard} 
           />
         </div>
       )}
