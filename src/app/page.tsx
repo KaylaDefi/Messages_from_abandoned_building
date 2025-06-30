@@ -1,21 +1,20 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Card from '../components/Card';
-import CardExplanationModal from '../components/CardExplanationModal';
+import { cardsData, CardData } from '../utils/cardsData'; 
+import { CardExplanationModal } from '../components/CardExplanationModal';
 import { shuffleArray } from '../utils/shuffle';
 
 export default function Home() {
-  const [deck, setDeck] = useState<number[]>([]); 
-  const [drawnCards, setDrawnCards] = useState<number[]>([]); 
+  const [deck, setDeck] = useState<CardData[]>([]); 
+  const [drawnCards, setDrawnCards] = useState<CardData[]>([]); 
   const [isDrawn, setIsDrawn] = useState(false); 
   const [currentCardIndex, setCurrentCardIndex] = useState(0); 
   const [isReading, setIsReading] = useState(false); 
 
   // Initialize deck on load
   useEffect(() => {
-    const cardNumbers = Array.from({ length: 72 }, (_, i) => i + 1); 
-    setDeck(shuffleArray(cardNumbers)); 
+    setDeck(shuffleArray(cardsData)); 
   }, []);
 
   // Draw 10 random cards from the shuffled deck
@@ -59,9 +58,9 @@ export default function Home() {
           ` 
         }}
       >
-        {drawnCards.map((number, index) => (
+        {drawnCards.map((card, index) => (
           <div 
-            key={number} 
+            key={card.id} 
             className={`bg-blue-500 text-white text-xl font-bold rounded-lg flex items-center justify-center relative ${index === 0 ? 'p-2' : ''}`}
             style={{ 
               gridArea: index === 0 || index === 1 ? 'overlap' : `card${index + 1}`,
@@ -77,17 +76,7 @@ export default function Home() {
               })
             }}
           >
-            {isDrawn ? (
-              // Show image for drawn cards
-              <img src={`/images/card${number}.png`} alt={`Card ${number}`} className="w-full h-full rounded-lg" />
-            ) : (
-              // Placeholder before cards are drawn
-              <span
-                className={index === 0 ? 'absolute top-2' : 'flex items-center justify-center'}
-              >
-                ?
-              </span>
-            )}
+            <img src={card.image} alt={card.name} className="w-full h-full rounded-lg" />
           </div>
         ))}
       </div>
@@ -114,9 +103,12 @@ export default function Home() {
       {isReading && currentCardIndex < drawnCards.length && (
         <div className="absolute inset-0 flex items-center justify-center z-50">
           <CardExplanationModal 
-            number={drawnCards[currentCardIndex]} 
-            onClose={handleNextCard} 
-          />
+            name={drawnCards[currentCardIndex].name}
+            explanation={drawnCards[currentCardIndex].explanation}
+            image={drawnCards[currentCardIndex].image}
+            position={currentCardIndex + 1}
+            positionExplanation={`Card ${currentCardIndex + 1} Position Meaning`}
+            onClose={handleNextCard}          />
         </div>
       )}
     </div>

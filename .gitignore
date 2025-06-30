@@ -35,3 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 tmp
+
+public/images/tarot-cards/
+# public/images/tarot-cards/ is a directory that contains images of tarot cards
